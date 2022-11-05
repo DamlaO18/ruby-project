@@ -2,18 +2,33 @@ require 'open-uri'
 require 'net/http'
 require 'json'
 
-puts "Input: "
 
-phrase = gets.chomp
+loop_var = true
 
-uri = URI.parse("https://api.funtranslations.com/translate/doge.json?text=#{phrase}")
-response = Net::HTTP.get_response(uri)
+while loop_var do
+
+    puts "Welcome to Random Shade Colour Generator"
+    puts "Search a colour: "
+
+    colour = gets.chomp
+
+    uri = URI.parse("https://x-colors.herokuapp.com/api/random/#{colour}")
+    response = Net::HTTP.get_response(uri)
 
 
-if response.code == "200"
-    json = JSON.parse(response.body)
+    if response.code == "200"
+        json = JSON.parse(response.body)
 
-    puts "Output: #{json["contents"]["translated"]}"
-else
-    puts "No translation found"
+        puts "Try hex shade of #{colour},  #{json["hex"]}"
+        puts "Try rbg shade of #{colour}, #{json["rgb"]}"
+        puts "Try hsl shade of #{colour}, #{json["hsl"]}"
+    else
+        puts "No colour found"
+    end
+
+    puts "Press Y to search again, or press any key to exit"
+
+    if (gets.chomp.downcase != 'y')
+        loop_var = false
+    end
 end
