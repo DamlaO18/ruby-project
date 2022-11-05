@@ -1,27 +1,26 @@
 require 'open-uri'
 require 'net/http'
 require 'json'
-
+require_relative './colour'
 
 loop_var = true
 
 while loop_var do
 
-    puts "Welcome to Random Shade Colour Generator"
+    puts "Welcome to Random Shade Generator!"
     puts "Search a colour: "
 
-    colour = gets.chomp
+    search_colour = gets.chomp.downcase
 
-    uri = URI.parse("https://x-colors.herokuapp.com/api/random/#{colour}")
+    uri = URI.parse("https://x-colors.herokuapp.com/api/random/#{search_colour}")
     response = Net::HTTP.get_response(uri)
 
 
     if response.code == "200"
         json = JSON.parse(response.body)
 
-        puts "Try hex shade of #{colour},  #{json["hex"]}"
-        puts "Try rbg shade of #{colour}, #{json["rgb"]}"
-        puts "Try hsl shade of #{colour}, #{json["hsl"]}"
+        colour = Colour.new(json["hex"], json["rgb"], json["hsl"])
+        colour.print_shades
     else
         puts "No colour found"
     end
@@ -30,5 +29,6 @@ while loop_var do
 
     if (gets.chomp.downcase != 'y')
         loop_var = false
+        puts "Thank you for using Random Shade Generator."
     end
 end
