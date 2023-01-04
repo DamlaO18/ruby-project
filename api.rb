@@ -5,14 +5,14 @@ require_relative './colour'
 
 loop_var = true
 
-while loop_var do
+puts "Welcome to Random Shade Generator!"
 
-    puts "Welcome to Random Shade Generator!"
+while loop_var do
     puts "Search a colour: "
 
     search_colour = gets.chomp.downcase
 
-    uri = URI.parse("https://x-colors.herokuapp.com/api/random/#{search_colour}")
+    uri = URI.parse("https://x-colors.yurace.pro/api/random/#{search_colour}")
     response = Net::HTTP.get_response(uri)
 
 
